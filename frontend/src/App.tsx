@@ -64,7 +64,9 @@ function App() {
   const chatLogEndRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    chatLogEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (typeof chatLogEndRef.current?.scrollIntoView === 'function') {
+      chatLogEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [messages])
 
   const currentContent = useMemo(() => pageContent[activePage], [activePage])
