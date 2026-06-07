@@ -1,8 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { FormEvent } from 'react'
 import './App.css'
 
 type PageKey = 'home' | 'about' | 'contact'
 type ThemeMode = 'light' | 'dark'
+type ChatRole = 'assistant' | 'user'
+type ChatMessage = {
+  id: string
+  role: ChatRole
+  text: string
+}
 
 const pageContent: Record<PageKey, { heading: string; body: string }> = {
   home: {
@@ -19,8 +26,17 @@ const pageContent: Record<PageKey, { heading: string; body: string }> = {
   },
 }
 
+const createWelcomeMessage = (page: PageKey): ChatMessage => ({
+  id: `welcome-${page}`,
+  role: 'assistant',
+  text: pageContent[page].body,
+})
+
 function App() {
   const [activePage, setActivePage] = useState<PageKey>('home')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [messageDraft, setMessageDraft] = useState('')
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [createWelcomeMessage('home')])
   const [theme, setTheme] = useState<ThemeMode>(() => {
     const storedTheme = window.localStorage.getItem('theme-mode')
     if (storedTheme === 'light' || storedTheme === 'dark') {
@@ -40,6 +56,17 @@ function App() {
     window.localStorage.setItem('theme-mode', theme)
   }, [theme])
 
+  useEffect(() => {
+    setMessages([createWelcomeMessage(activePage)])
+    setMessageDraft('')
+  }, [activePage])
+
+  const chatLogEndRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    chatLogEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
   const currentContent = useMemo(() => pageContent[activePage], [activePage])
 
   const menuItems: Array<{ key: PageKey; label: string }> = [
@@ -52,31 +79,115 @@ function App() {
     setTheme((current) => (current === 'light' ? 'dark' : 'light'))
   }
 
+  const handleMenuClick = (page: PageKey) => {
+    setActivePage(page)
+    setIsMobileMenuOpen(false)
+  }
+
+  const handleSendMessage = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const trimmedMessage = messageDraft.trim()
+    if (!trimmedMessage) {
+      return
+    }
+
+    const userMessage: ChatMessage = {
+      id: `user-${Date.now()}`,
+      role: 'user',
+      text: trimmedMessage,
+    }
+
+    const assistantMessage: ChatMessage = {
+      id: `assistant-${Date.now() + 1}`,
+      role: 'assistant',
+      text: `I can help with ${currentContent.heading.toLowerCase()}. You asked: "${trimmedMessage}".`,
+    }
+
+    setMessages((current) => [...current, userMessage, assistantMessage])
+    setMessageDraft('')
+  }
+
   return (
     <div className="app-shell">
       <header className="site-header">
+        <button
+          type="button"
+          className="menu-toggle"
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="primary-navigation"
+          onClick={() => setIsMobileMenuOpen((current) => !current)}
+        >
+          <span className="menu-icon" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
+          <span>{isMobileMenuOpen ? 'Close menu' : 'Menu'}</span>
+        </button>
+
         <p className="brand">Platform Banking</p>
-        <button type="button" className="theme-toggle" onClick={toggleTheme}>
-          {theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+
+        <button
+          type="button"
+          className="theme-toggle"
+          aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+          onClick={toggleTheme}
+        >
+          {theme === 'light' ? 'Dark mode' : 'Light mode'}
         </button>
       </header>
 
-      <nav aria-label="Primary" className="main-nav">
+      <nav
+        id="primary-navigation"
+        aria-label="Primary"
+        className={isMobileMenuOpen ? 'main-nav is-open' : 'main-nav'}
+      >
         {menuItems.map((item) => (
           <button
             key={item.key}
             type="button"
             className={activePage === item.key ? 'nav-item active' : 'nav-item'}
-            onClick={() => setActivePage(item.key)}
+            onClick={() => handleMenuClick(item.key)}
           >
             {item.label}
           </button>
         ))}
       </nav>
 
-      <main className="content-panel" role="main">
-        <h1>{currentContent.heading}</h1>
-        <p>{currentContent.body}</p>
+      <main className="chat-panel" role="main">
+        <header className="chat-header">
+          <h1>{currentContent.heading}</h1>
+          <p>Ask questions and get guidance in one place.</p>
+        </header>
+
+        <section className="chat-log" aria-live="polite" aria-label="Conversation">
+          {messages.map((message) => (
+            <article
+              key={message.id}
+              className={message.role === 'user' ? 'message-row user' : 'message-row assistant'}
+            >
+              <p>{message.text}</p>
+            </article>
+          ))}
+          <div ref={chatLogEndRef} />
+        </section>
+
+        <form className="chat-input-bar" onSubmit={handleSendMessage}>
+          <label htmlFor="chat-message" className="sr-only">
+            Message
+          </label>
+          <input
+            id="chat-message"
+            name="chat-message"
+            type="text"
+            value={messageDraft}
+            onChange={(event) => setMessageDraft(event.target.value)}
+            placeholder="Type your message..."
+            autoComplete="off"
+          />
+          <button type="submit">Send</button>
+        </form>
       </main>
     </div>
   )
