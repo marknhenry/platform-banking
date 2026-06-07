@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\models\**\*.cs" />
+    <Compile Include="..\services\**\*.cs" />
+    <Compile Include="..\policies\**\*.cs" />
+    <Compile Include="..\agents\**\*.cs" />
+  </ItemGroup>
+
 </Project>

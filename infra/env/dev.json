@@ -1,0 +1,5 @@
+{
+  "environment": "dev",
+  "location": "eastus",
+  "resourceGroup": "rg-platform-banking-dev"
+}

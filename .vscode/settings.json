@@ -22,7 +22,10 @@
         "npm run test": true,
         "Push-Location": true,
         "ConvertTo-Json": true,
-        "npm --prefix frontend": true
+        "npm --prefix frontend": true,
+        "git blame": true,
+        "gh": true,
+        "dotnet build": true
     }
 }
 

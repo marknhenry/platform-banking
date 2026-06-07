@@ -27,19 +27,19 @@
 
 **CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T007 Create core domain models from data model in backend/src/models/CustomerIdentitySession.cs
-- [ ] T008 [P] Create consent and trust models in backend/src/models/ConsentProfile.cs and backend/src/models/TrustIndicatorState.cs
-- [ ] T009 [P] Create policy/audit/handoff models in backend/src/models/PolicyDecisionRecord.cs, backend/src/models/AuditEvent.cs, and backend/src/models/HandoffPackage.cs
-- [ ] T010 Implement Azure SQL and Redis configuration bindings in backend/src/services/Configuration/StorageOptions.cs
-- [ ] T011 [P] Implement shared authentication middleware and session context extraction in backend/src/api/Middleware/AuthSessionMiddleware.cs
-- [ ] T012 [P] Implement shared correlation ID, structured logging, and error middleware in backend/src/api/Middleware/RequestContextMiddleware.cs
-- [ ] T013 Implement agent capability registry and read-only enforcement baseline in backend/src/agents/AgentCapabilityRegistry.cs
-- [ ] T014 Implement policy classification service baseline with confidence handling in backend/src/policies/PolicyClassificationService.cs
-- [ ] T015 Implement audit writer abstraction and append-only storage adapter in backend/src/services/Audit/AuditWriter.cs
-- [ ] T016 [P] Implement frontend API client foundation and auth session bootstrap in frontend/src/services/apiClient.ts
-- [ ] T017 [P] Create global React app shell with conversational-first routing in frontend/src/app/App.tsx
-- [ ] T018 Create branch deployment IaC modules for backend/frontend/data/observability in infra/bicep/main.bicep
-- [ ] T019 Implement branch deployment script and environment parameter loading in infra/scripts/deploy-branch.ps1
+- [x] T007 Create core domain models from data model in backend/src/models/CustomerIdentitySession.cs
+- [x] T008 [P] Create consent and trust models in backend/src/models/ConsentProfile.cs and backend/src/models/TrustIndicatorState.cs
+- [x] T009 [P] Create policy/audit/handoff models in backend/src/models/PolicyDecisionRecord.cs, backend/src/models/AuditEvent.cs, and backend/src/models/HandoffPackage.cs
+- [x] T010 Implement Azure SQL and Redis configuration bindings in backend/src/services/Configuration/StorageOptions.cs
+- [x] T011 [P] Implement shared authentication middleware and session context extraction in backend/src/api/Middleware/AuthSessionMiddleware.cs
+- [x] T012 [P] Implement shared correlation ID, structured logging, and error middleware in backend/src/api/Middleware/RequestContextMiddleware.cs
+- [x] T013 Implement agent capability registry and read-only enforcement baseline in backend/src/agents/AgentCapabilityRegistry.cs
+- [x] T014 Implement policy classification service baseline with confidence handling in backend/src/policies/PolicyClassificationService.cs
+- [x] T015 Implement audit writer abstraction and append-only storage adapter in backend/src/services/Audit/AuditWriter.cs
+- [x] T016 [P] Implement frontend API client foundation and auth session bootstrap in frontend/src/services/apiClient.ts
+- [x] T017 [P] Create global React app shell with conversational-first routing in frontend/src/app/App.tsx
+- [x] T018 Create branch deployment IaC modules for backend/frontend/data/observability in infra/bicep/main.bicep
+- [x] T019 Implement branch deployment script and environment parameter loading in infra/scripts/deploy-branch.ps1
 
 **Checkpoint**: Foundation ready. User story implementation can now proceed.
 

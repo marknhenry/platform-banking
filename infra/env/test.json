@@ -1,0 +1,5 @@
+{
+  "environment": "test",
+  "location": "eastus2",
+  "resourceGroup": "rg-platform-banking-test"
+}
