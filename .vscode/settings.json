@@ -21,7 +21,8 @@
         ".specify/tmp-implement-t001-t006.ps1": true,
         "npm run test": true,
         "Push-Location": true,
-        "ConvertTo-Json": true
+        "ConvertTo-Json": true,
+        "npm --prefix frontend": true
     }
 }
 
