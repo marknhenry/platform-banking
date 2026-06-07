@@ -12,12 +12,12 @@
 
 **Purpose**: Establish repository structure, baseline toolchains, and CI entry points for Phase 0.
 
-- [ ] T001 Create backend and frontend folder structure per plan in backend/ and frontend/
-- [ ] T002 Initialize .NET backend solution and projects in backend/src/ and backend/tests/
-- [ ] T003 [P] Initialize React TypeScript app and test setup in frontend/src/ and frontend/tests/
-- [ ] T004 [P] Create IaC and deployment script scaffolding in infra/bicep/ and infra/scripts/
-- [ ] T005 [P] Add OpenAPI contract source and validation script wiring for contracts/phase0-api.yaml in backend/tests/contract/
-- [ ] T006 Configure CI workflow for backend, frontend, contract, and e2e test jobs in .github/workflows/phase0-ci.yml
+- [x] T001 Create backend and frontend folder structure per plan in backend/ and frontend/
+- [x] T002 Initialize .NET backend solution and projects in backend/src/ and backend/tests/
+- [x] T003 [P] Initialize React TypeScript app and test setup in frontend/src/ and frontend/tests/
+- [x] T004 [P] Create IaC and deployment script scaffolding in infra/bicep/ and infra/scripts/
+- [x] T005 [P] Add OpenAPI contract source and validation script wiring for contracts/phase0-api.yaml in backend/tests/contract/
+- [x] T006 Configure CI workflow for backend, frontend, contract, and e2e test jobs in .github/workflows/phase0-ci.yml
 
 ---
 
