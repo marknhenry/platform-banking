@@ -92,11 +92,25 @@
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-006**: System MUST define explainability outputs for AI actions (intent, action preview, outcome receipt, and rationale).
+- **FR-007**: System MUST define safety controls for high-risk actions (policy checks, explicit confirmation, and human fallback triggers).
+- **FR-008**: System MUST define agent/data access boundaries with least-privilege scope and auditable tool usage.
+- **FR-009**: System MUST remain Azure-native, deployable via IaC/scripts, and use React for frontend surfaces.
+- **FR-010**: System MUST include automated test coverage and branch-deployment manual validation criteria.
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-011**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
+- **FR-012**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+
+## Constitution Alignment *(mandatory)*
+
+- **CA-001 (AI-First)**: Primary user journeys include a conversational-first entry path.
+- **CA-002 (Explainability)**: Action previews, receipts, and plain-language rationale are specified.
+- **CA-003 (Safety)**: High-risk actions require policy and user confirmation, with escalation paths.
+- **CA-004 (Auditability)**: Prompt/tool/decision/outcome logging events are identified.
+- **CA-005 (Azure + IaC + React + Testing)**: Azure-native services, IaC deployment, React frontend impact,
+  and automated testing scope are explicitly documented.
 
 ### Key Entities *(include if feature involves data)*
 

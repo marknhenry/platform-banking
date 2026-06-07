@@ -40,7 +40,12 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] AI-first path defined: conversational entry flow exists for primary user journeys.
+- [ ] Explainability defined: action previews, receipts, and rationale surfaces specified.
+- [ ] Safety controls defined: policy checks, explicit confirmations, and human escalation paths.
+- [ ] Agent boundaries defined: narrow scope, least privilege, tool-mediated access, audit events.
+- [ ] Platform constraints met: Azure-native deployment, IaC/scripts, React frontend.
+- [ ] Quality gates defined: automated tests per feature, CI execution, branch deployment for manual validation.
 
 ## Project Structure
 
