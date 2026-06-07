@@ -1,0 +1,102 @@
+name: phase0-ci
+
+on:
+  push:
+    branches: ["001-implement-phase0-prd"]
+  pull_request:
+    branches: ["001-implement-phase0-prd"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        run: dotnet restore PlatformBanking.slnx
+      - name: Unit tests
+        run: dotnet test backend/tests/unit/PlatformBanking.UnitTests.csproj --configuration Release --no-restore
+      - name: Integration tests
+        run: dotnet test backend/tests/integration/PlatformBanking.IntegrationTests.csproj --configuration Release --no-restore
+      - name: Contract tests
+        run: dotnet test backend/tests/contract/PlatformBanking.ContractTests.csproj --configuration Release --no-restore
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install
+        run: npm ci
+      - name: Unit tests
+        run: npm run test
+
+  contract-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate OpenAPI contract
+        shell: pwsh
+        run: ./backend/tests/contract/validate-openapi.ps1
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      - name: E2E tests
+        run: npm run test:e2e
+
+  deploy-frontend-pages:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/001-implement-phase0-prd'
+    needs:
+      - frontend-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install
+        working-directory: frontend
+        run: npm ci
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

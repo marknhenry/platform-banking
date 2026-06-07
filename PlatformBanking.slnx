@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/backend/" />
+  <Folder Name="/backend/src/" />
+  <Folder Name="/backend/src/api/">
+    <Project Path="backend/src/api/PlatformBanking.Api.csproj" />
+  </Folder>
+  <Folder Name="/backend/tests/" />
+  <Folder Name="/backend/tests/contract/">
+    <Project Path="backend/tests/contract/PlatformBanking.ContractTests.csproj" />
+  </Folder>
+  <Folder Name="/backend/tests/integration/">
+    <Project Path="backend/tests/integration/PlatformBanking.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/backend/tests/unit/">
+    <Project Path="backend/tests/unit/PlatformBanking.UnitTests.csproj" />
+  </Folder>
+</Solution>
