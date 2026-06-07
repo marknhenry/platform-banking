@@ -19,7 +19,9 @@
         "npm install": true,
         "Set-Content": true,
         ".specify/tmp-implement-t001-t006.ps1": true,
-        "npm run test": true
+        "npm run test": true,
+        "Push-Location": true,
+        "ConvertTo-Json": true
     }
 }
 
