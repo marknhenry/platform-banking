@@ -1,0 +1,337 @@
+openapi: 3.0.3
+info:
+  title: Phase 0 Trust Foundation API
+  version: 1.0.0
+  description: >-
+    Read-only API contract for identity, consent, explainability, policy blocking,
+    audit retrieval, and human handoff in Phase 0.
+servers:
+  - url: https://phase0-nonprod.example.internal
+
+tags:
+  - name: Auth
+  - name: Consent
+  - name: Assistant
+  - name: Audit
+  - name: Handoff
+
+paths:
+  /v1/auth/session:
+    post:
+      tags: [Auth]
+      summary: Create authenticated session context
+      operationId: createSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerIdentitySession'
+
+  /v1/consents:
+    get:
+      tags: [Consent]
+      summary: Get consent profile for the current user
+      operationId: getConsentProfile
+      responses:
+        '200':
+          description: Consent profile returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentProfileResponse'
+
+  /v1/consents/{scopeCategory}:
+    put:
+      tags: [Consent]
+      summary: Update consent for a specific scope
+      operationId: updateConsent
+      parameters:
+        - name: scopeCategory
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [accounts, transactions, cards, payments, support]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateConsentRequest'
+      responses:
+        '200':
+          description: Consent updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentUpdateResult'
+
+  /v1/assistant/query:
+    post:
+      tags: [Assistant]
+      summary: Submit read-only conversational query
+      operationId: submitAssistantQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssistantQueryRequest'
+      responses:
+        '200':
+          description: Explainable assistant response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssistantQueryResponse'
+
+  /v1/audit/events/{conversationId}:
+    get:
+      tags: [Audit]
+      summary: Retrieve audit trail for a conversation
+      operationId: getAuditEvents
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Ordered audit events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditEventList'
+
+  /v1/handoffs:
+    post:
+      tags: [Handoff]
+      summary: Create human handoff package
+      operationId: createHandoff
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHandoffRequest'
+      responses:
+        '201':
+          description: Handoff package created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandoffPackage'
+
+components:
+  schemas:
+    CreateSessionRequest:
+      type: object
+      required: [userId, authMethod]
+      properties:
+        userId:
+          type: string
+        authMethod:
+          type: string
+          enum: [entra_oidc, other]
+
+    CustomerIdentitySession:
+      type: object
+      required: [sessionId, userId, assuranceLevel, issuedAt, expiresAt, status]
+      properties:
+        sessionId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        assuranceLevel:
+          type: string
+          enum: [low, medium, high]
+        issuedAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [active, expired, revoked]
+
+    ConsentProfileResponse:
+      type: object
+      required: [userId, consents, readOnlyMode]
+      properties:
+        userId:
+          type: string
+        readOnlyMode:
+          type: boolean
+          enum: [true]
+        consents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentItem'
+
+    ConsentItem:
+      type: object
+      required: [scopeCategory, status, effectiveAt]
+      properties:
+        scopeCategory:
+          type: string
+          enum: [accounts, transactions, cards, payments, support]
+        status:
+          type: string
+          enum: [granted, denied, pending, revoked]
+        effectiveAt:
+          type: string
+          format: date-time
+
+    UpdateConsentRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [granted, denied, revoked]
+
+    ConsentUpdateResult:
+      type: object
+      required: [scopeCategory, status, enforcementBy]
+      properties:
+        scopeCategory:
+          type: string
+        status:
+          type: string
+        enforcementBy:
+          type: string
+          format: date-time
+          description: Consent must be fully enforced in under 30 seconds.
+
+    AssistantQueryRequest:
+      type: object
+      required: [conversationId, userInput]
+      properties:
+        conversationId:
+          type: string
+          format: uuid
+        userInput:
+          type: string
+
+    AssistantQueryResponse:
+      type: object
+      required:
+        - conversationId
+        - summary
+        - explanation
+        - confidenceScore
+        - executionBlocked
+        - handoffRequired
+      properties:
+        conversationId:
+          type: string
+          format: uuid
+        summary:
+          type: string
+        explanation:
+          $ref: '#/components/schemas/ExplainabilityPayload'
+        confidenceScore:
+          type: number
+          format: double
+        executionBlocked:
+          type: boolean
+          enum: [true]
+          description: Phase 0 is read-only; execution is always blocked.
+        handoffRequired:
+          type: boolean
+        handoffReason:
+          type: string
+          nullable: true
+
+    ExplainabilityPayload:
+      type: object
+      required: [interpretedIntent, dataSourcesUsed, reasoning]
+      properties:
+        interpretedIntent:
+          type: string
+        dataSourcesUsed:
+          type: array
+          items:
+            type: string
+        reasoning:
+          type: string
+
+    AuditEvent:
+      type: object
+      required: [auditEventId, conversationId, eventType, occurredAt, correlationId]
+      properties:
+        auditEventId:
+          type: string
+          format: uuid
+        conversationId:
+          type: string
+          format: uuid
+        eventType:
+          type: string
+          enum: [prompt_received, policy_evaluated, tool_called, response_returned, handoff_created]
+        occurredAt:
+          type: string
+          format: date-time
+        correlationId:
+          type: string
+
+    AuditEventList:
+      type: object
+      required: [conversationId, events]
+      properties:
+        conversationId:
+          type: string
+          format: uuid
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEvent'
+
+    CreateHandoffRequest:
+      type: object
+      required: [conversationId, triggerReason, summary]
+      properties:
+        conversationId:
+          type: string
+          format: uuid
+        triggerReason:
+          type: string
+          enum: [low_confidence, unsupported_intent, high_risk_request]
+        confidenceScore:
+          type: number
+          format: double
+          nullable: true
+        summary:
+          type: string
+
+    HandoffPackage:
+      type: object
+      required: [handoffId, conversationId, triggerReason, createdAt, status]
+      properties:
+        handoffId:
+          type: string
+          format: uuid
+        conversationId:
+          type: string
+          format: uuid
+        triggerReason:
+          type: string
+          enum: [low_confidence, unsupported_intent, high_risk_request]
+        createdAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [queued, delivered, failed]
