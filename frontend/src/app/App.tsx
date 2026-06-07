@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import AssistantHomePage from '../pages/AssistantHomePage'
 import { bootstrapAuthSession } from '../services/apiClient'
 import '../App.css'
 
@@ -207,6 +208,8 @@ function App() {
           ))}
           <div ref={chatLogEndRef} />
         </section>
+
+        <AssistantHomePage userId={sessionUserId ?? 'demo-user'} />
 
         <form className="chat-input-bar" onSubmit={handleSendMessage}>
           <label htmlFor="chat-message" className="sr-only">

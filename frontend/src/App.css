@@ -183,6 +183,76 @@
   border: 0;
 }
 
+.assistant-home-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 0.25rem 0;
+}
+
+.trust-indicator,
+.consent-panel {
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 0.8rem;
+  background: color-mix(in oklab, var(--panel-bg) 90%, white 10%);
+}
+
+.trust-indicator h2,
+.consent-panel h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+}
+
+.trust-indicator p {
+  margin: 0.25rem 0;
+}
+
+.subtle {
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.consent-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.consent-panel li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--button-border);
+  border-radius: 10px;
+  padding: 0.55rem;
+}
+
+.consent-panel li > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.consent-actions button {
+  border: 1px solid var(--button-border);
+  background: var(--button-bg);
+  color: var(--button-text);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+}
+
 @media (max-width: 640px) {
   .app-shell {
     padding: 1rem;
@@ -231,5 +301,14 @@
 
   .message-row p {
     max-width: 92%;
+  }
+
+  .assistant-home-page {
+    grid-template-columns: 1fr;
+  }
+
+  .consent-panel li {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

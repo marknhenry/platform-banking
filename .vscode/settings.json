@@ -25,7 +25,13 @@
         "npm --prefix frontend": true,
         "git blame": true,
         "gh": true,
-        "dotnet build": true
+        "dotnet build": true,
+        "dotnet test": true,
+        "npm run build": true,
+        "/^pwsh \\./backend/tests/contract/validate-openapi\\.ps1$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
     }
 }
 

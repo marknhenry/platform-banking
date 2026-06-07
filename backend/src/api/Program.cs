@@ -5,12 +5,14 @@ using PlatformBanking.Models;
 using PlatformBanking.Policies;
 using PlatformBanking.Services.Audit;
 using PlatformBanking.Services.Configuration;
+using PlatformBanking.Services.Consent;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
 builder.Services
     .AddOptions<StorageOptions>()
     .Bind(builder.Configuration.GetSection(StorageOptions.SectionName))
@@ -20,6 +22,9 @@ builder.Services.AddSingleton<IAgentCapabilityRegistry>(_ =>
     new AgentCapabilityRegistry(AgentCapabilityRegistry.CreateDefault()));
 builder.Services.AddSingleton<IPolicyClassificationService, PolicyClassificationService>();
 builder.Services.AddSingleton<IAuditWriter, AppendOnlyInMemoryAuditWriter>();
+builder.Services.AddSingleton<IAuthConsentAuditPublisher, AuthConsentAuditPublisher>();
+builder.Services.AddSingleton<IConsentService, ConsentService>();
+builder.Services.AddSingleton<ITrustIndicatorService, TrustIndicatorService>();
 
 var app = builder.Build();
 
@@ -31,6 +36,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRequestContext();
 app.UseAuthSession();
+app.MapControllers();
 
 var summaries = new[]
 {
@@ -71,6 +77,8 @@ app.MapGet("/session", (HttpContext context) =>
 });
 
 app.Run();
+
+public partial class Program;
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

@@ -12,7 +12,7 @@ describe('issue 61 frontend shell', () => {
     document.documentElement.removeAttribute('data-theme')
   })
 
-  it('shows welcome content on home by default', () => {
+  it('shows welcome content on home by default', async () => {
     render(<App />)
 
     expect(
@@ -21,10 +21,13 @@ describe('issue 61 frontend shell', () => {
     expect(
       screen.getByText(/conversational, trustworthy banking experience/i),
     ).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /trust indicator/i })).toBeInTheDocument()
   })
 
-  it('navigates between Home, About, and Contact pages', () => {
+  it('navigates between Home, About, and Contact pages', async () => {
     render(<App />)
+
+    await screen.findByRole('heading', { name: /trust indicator/i })
 
     fireEvent.click(screen.getByRole('button', { name: /about/i }))
     expect(screen.getByRole('heading', { name: /about us/i })).toBeInTheDocument()
@@ -38,8 +41,10 @@ describe('issue 61 frontend shell', () => {
     ).toBeInTheDocument()
   })
 
-  it('toggles theme mode and persists it', () => {
+  it('toggles theme mode and persists it', async () => {
     render(<App />)
+
+    await screen.findByRole('heading', { name: /trust indicator/i })
 
     const toggle = screen.getByRole('button', { name: /switch to dark mode/i })
     fireEvent.click(toggle)

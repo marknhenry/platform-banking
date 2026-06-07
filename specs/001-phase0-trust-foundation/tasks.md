@@ -53,20 +53,20 @@
 
 ### Tests for User Story 1 (MANDATORY)
 
-- [ ] T020 [P] [US1] Add contract tests for auth and consent endpoints in backend/tests/contract/AuthConsentContractTests.cs
-- [ ] T021 [P] [US1] Add integration tests for sign-in and consent lifecycle in backend/tests/integration/ConsentLifecycleTests.cs
-- [ ] T022 [P] [US1] Add frontend unit tests for trust indicator rendering in frontend/tests/unit/trustIndicator.test.tsx
-- [ ] T023 [US1] Add e2e test for sign-in + consent + revocation SLA path in frontend/tests/e2e/consent-revocation.spec.ts
+- [x] T020 [P] [US1] Add contract tests for auth and consent endpoints in backend/tests/contract/AuthConsentContractTests.cs
+- [x] T021 [P] [US1] Add integration tests for sign-in and consent lifecycle in backend/tests/integration/ConsentLifecycleTests.cs
+- [x] T022 [P] [US1] Add frontend unit tests for trust indicator rendering in frontend/tests/unit/trustIndicator.test.tsx
+- [x] T023 [US1] Add e2e test for sign-in + consent + revocation SLA path in frontend/tests/e2e/consent-revocation.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T024 [P] [US1] Implement auth session endpoint from contract in backend/src/api/Controllers/AuthController.cs
-- [ ] T025 [P] [US1] Implement consent read/update endpoints from contract in backend/src/api/Controllers/ConsentController.cs
-- [ ] T026 [US1] Implement consent service with revocation propagation deadline (<30s) in backend/src/services/Consent/ConsentService.cs
-- [ ] T027 [US1] Implement trust indicator query composition in backend/src/services/Consent/TrustIndicatorService.cs
-- [ ] T028 [P] [US1] Implement consent management UI and trust indicator components in frontend/src/components/ConsentPanel.tsx and frontend/src/components/TrustIndicator.tsx
-- [ ] T029 [US1] Wire authenticated conversational landing screen with trust state loading in frontend/src/pages/AssistantHomePage.tsx
-- [ ] T030 [US1] Add audit event emission for sign-in and consent updates in backend/src/services/Audit/AuthConsentAuditPublisher.cs
+- [x] T024 [P] [US1] Implement auth session endpoint from contract in backend/src/api/Controllers/AuthController.cs
+- [x] T025 [P] [US1] Implement consent read/update endpoints from contract in backend/src/api/Controllers/ConsentController.cs
+- [x] T026 [US1] Implement consent service with revocation propagation deadline (<30s) in backend/src/services/Consent/ConsentService.cs
+- [x] T027 [US1] Implement trust indicator query composition in backend/src/services/Consent/TrustIndicatorService.cs
+- [x] T028 [P] [US1] Implement consent management UI and trust indicator components in frontend/src/components/ConsentPanel.tsx and frontend/src/components/TrustIndicator.tsx
+- [x] T029 [US1] Wire authenticated conversational landing screen with trust state loading in frontend/src/pages/AssistantHomePage.tsx
+- [x] T030 [US1] Add audit event emission for sign-in and consent updates in backend/src/services/Audit/AuthConsentAuditPublisher.cs
 
 **Checkpoint**: User Story 1 is independently functional and testable.
 
